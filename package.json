@@ -1,0 +1,21 @@
+{
+  "name": "react-async-action-reducer",
+  "version": "0.0.1",
+  "description": "Simplify creation of actions and reducers for react and redux",
+  "scripts": {
+    "build": "tsc",
+    "prepublish": "tsc"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Wojciech Kocjan <wojciech@kocjan.org>",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^16.13.1",
+    "redux": "^4.0.5"
+  },
+  "devDependencies": {
+    "@types/react-redux": "^7.1.9",
+    "typescript": "^3.9.5"
+  }
+}
