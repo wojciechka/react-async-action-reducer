@@ -1,4 +1,5 @@
-import { ActionPerform, IPerformResult, IOptions, ISelectorOptions, dataToKeyType } from './types';
+import { ActionPerform, ActionReducerAction, IPerformResult, IOptions, ISelectorOptions, dataToKeyType } from './types';
+import { Dispatch, useEffect } from 'react';
 
 const idFromSelectorOptions = <I, O>(
   selectorOptions: ISelectorOptions<I, O> | undefined,
@@ -24,12 +25,18 @@ const retrieveStateAndDispatchActionIfNeeded = <I, O>(
     return undefined;
   }
 
-  if (rootState[options.prefix]?.result && rootState[options.prefix]?.result[id as string]) {
+  const hasValue = rootState[options.prefix]?.result && rootState[options.prefix]?.result[id as string];
+  const callDispatch = selectorOptions?.invokeAtFirstRun && selectorOptions?.dispatch;
+
+  useEffect(() => {
+    if (!hasValue && callDispatch && selectorOptions?.dispatch) {
+      perform(selectorOptions?.data)(selectorOptions.dispatch as Dispatch<ActionReducerAction<O>>);
+    }
+  }, [hasValue, callDispatch]);
+
+  if (hasValue) {
     return rootState[options.prefix]?.result[id as string] as IPerformResult<O>;
   } else {
-    if (selectorOptions?.invokeAtFirstRun && selectorOptions?.dispatch) {
-      perform(selectorOptions?.data)(selectorOptions.dispatch);
-    }
     return undefined;
   }
 };

@@ -1,4 +1,4 @@
-import { Dispatch } from 'redux';
+import { Dispatch } from 'react';
 
 export interface IClearOtherData {
   type: string;
@@ -36,7 +36,7 @@ export interface ISelectorOptions<I, O> {
   id?: string;
   data?: I;
   invokeAtFirstRun?: boolean;
-  dispatch?: Dispatch<any>;
+  dispatch?: Dispatch<ActionReducerAction<O>>;
 };
 
 // IPerformResult describes the state of an action, including whether in progress and/or if error has occurred
@@ -80,7 +80,7 @@ export type ActionReducerAction<O> = IStartedActionPayload | IFailureActionPaylo
 
 export type ReducerFunction<O> = (state: IState<O>, action: ActionReducerAction<O>) => IState<O>;
 
-export type ActionPerform<I> = (data?: I) => (dispatch: Dispatch) => string;
+export type ActionPerform<I> = (data?: I) => (dispatch: Dispatch<ActionReducerAction<any>>) => string;
 
 export type dataToKeyType<I> = (data?: I) => string;
 
