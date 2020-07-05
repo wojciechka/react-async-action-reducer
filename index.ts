@@ -4,7 +4,7 @@ import { ActionAndReducer, ActionPerform, IOptions, ActionReducerAction } from '
 import { createPerformActions } from './actions';
 import { createDataToKey } from './dataToKey';
 import { createReducerFunction } from './reducer';
-import { createDataAndErrorSelector, createDataSelector, createResultSelector } from './selector'
+import { createDataSelector, createResultSelector, createSelector } from './selector'
 
 export * from './types';
 
@@ -23,7 +23,7 @@ export const createActionAndReducer = <I, O>(options: IOptions<I, O>): ActionAnd
 
   const resultSelector = createResultSelector(perform, options, dataToKey);
   const dataSelector = createDataSelector(perform, options, dataToKey);
-  const dataAndErrorSelector = createDataAndErrorSelector(perform, options, dataToKey);
+  const selector = createSelector(perform, options, dataToKey);
 
   return Object.assign(perform, {
     perform,
@@ -32,7 +32,8 @@ export const createActionAndReducer = <I, O>(options: IOptions<I, O>): ActionAnd
     dataToKey,
     resultSelector,
     dataSelector,
-    dataAndErrorSelector,
+    dataAndErrorSelector: selector, // TODO: remove over time
+    selector,
     prefix: options.prefix
   });
 };

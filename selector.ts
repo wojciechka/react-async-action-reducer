@@ -10,7 +10,7 @@ const idFromSelectorOptions = <I, O>(
   } else if (selectorOptions?.data !== undefined) {
     return dataToKey(selectorOptions.data);
   } else {
-    return dataToKey();
+    return dataToKey(undefined);
   }
 };
 
@@ -30,7 +30,7 @@ const retrieveStateAndDispatchActionIfNeeded = <I, O>(
 
   useEffect(() => {
     if (!hasValue && callDispatch && selectorOptions?.dispatch) {
-      perform(selectorOptions?.data)(selectorOptions.dispatch as Dispatch<ActionReducerAction<O>>);
+      perform((selectorOptions?.data as I))(selectorOptions.dispatch as Dispatch<ActionReducerAction<O>>);
     }
   }, [hasValue, callDispatch]);
 
@@ -66,18 +66,19 @@ export const createDataSelector = <I, O>(
     };
   };
 
-export const createDataAndErrorSelector = <I, O>(
+export const createSelector = <I, O>(
   perform: ActionPerform<I>,
   options: IOptions<I, O>,
   dataToKey: dataToKeyType<I>,
 ) =>
   (selectorOptions?: ISelectorOptions<I, O>) => {
     const id = idFromSelectorOptions<I, O>(selectorOptions, dataToKey);
-    return (rootState: any): { data: O | undefined, error: any | undefined } => {
+    return (rootState: any): { data: O | undefined, error: any | undefined, inProgress: boolean | undefined } => {
       const res = retrieveStateAndDispatchActionIfNeeded(perform, options, selectorOptions, id, rootState);
       return {
         data: res?.data,
         error: res?.error,
+        inProgress: res?.inProgress,
       };
     };
   };

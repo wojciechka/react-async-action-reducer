@@ -80,8 +80,9 @@ export type ActionReducerAction<O> = IStartedActionPayload | IFailureActionPaylo
 
 export type ReducerFunction<O> = (state: IState<O>, action: ActionReducerAction<O>) => IState<O>;
 
-export type ActionPerform<I> = (data?: I) => (dispatch: Dispatch<ActionReducerAction<any>>) => string;
+export type ActionPerform<I> = (data: I) => (dispatch: Dispatch<ActionReducerAction<any>>) => string;
 
+// dataToKey can be called without data in some cases, hence data parameter has to be made optional
 export type dataToKeyType<I> = (data?: I) => string;
 
 export interface IActionAndReducerData<I, O> {
@@ -92,6 +93,8 @@ export interface IActionAndReducerData<I, O> {
   prefix: string;
   resultSelector: (selectorOptions?: ISelectorOptions<I, O>) => (state: any) => IPerformResult<O> | undefined;
   dataSelector: (selectorOptions?: ISelectorOptions<I, O>) => (state: any) => O | undefined;
+  selector: (selectorOptions?: ISelectorOptions<I, O>) => (state: any) => { data: O | undefined, error: any | undefined, inProgress: boolean | undefined };
+  // the selector below is now deprecated
   dataAndErrorSelector: (selectorOptions?: ISelectorOptions<I, O>) => (state: any) => { data: O | undefined, error: any | undefined };
 }
 

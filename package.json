@@ -1,6 +1,6 @@
 {
   "name": "react-async-action-reducer",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simplify creation of actions and reducers for react and redux",
   "scripts": {
     "build": "tsc",
